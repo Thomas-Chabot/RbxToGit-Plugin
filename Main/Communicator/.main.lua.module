@@ -1,0 +1,20 @@
+local Communicator = { };
+local C            = { };
+
+local HttpService = game:GetService ("HttpService");
+
+function C.new (host, port)
+	return setmetatable ({
+		_host = host,
+		_port = port,
+		
+		_url  = "http://" .. host .. ":" .. port .. "/post"
+	}, Communicator);
+end
+
+function Communicator:post (contents)
+	HttpService:PostAsync (self._url, contents, Enum.HttpContentType.TextPlain);
+end
+
+Communicator.__index = Communicator;
+return C;

@@ -1,0 +1,13 @@
+local uis = game:GetService ("UserInputService");
+
+local event = Instance.new("BindableEvent");
+
+function onKeyPress(inputObject, gameProcessedEvent)
+	if inputObject.KeyCode == Enum.KeyCode.G and uis:IsKeyDown(Enum.KeyCode.LeftControl) then
+		event:Fire ();
+	end
+end
+ 
+uis.InputBegan:connect(onKeyPress)
+
+return event;

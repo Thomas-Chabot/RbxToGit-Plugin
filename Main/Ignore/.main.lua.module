@@ -1,0 +1,28 @@
+local whitelist = {
+	"workspace",
+	"players",
+	"lighting",
+	"replicatedfirst",
+	"replicatedstorage",
+	"serverscriptservice",
+	"serverstorage",
+	"startergui",
+	"starterpack",
+	"starterplayer"
+}
+
+function isWhitelisted (object)
+	local fn = object:GetFullName ():lower ();
+	for _,parent in pairs (whitelist) do
+		if (fn:sub (1, #parent) == parent) then
+			return true;
+		end
+	end
+	return false;
+end
+
+function shouldIgnore (object)
+	return not isWhitelisted (object);
+end
+
+return shouldIgnore;

@@ -1,0 +1,37 @@
+local Parser = { };
+
+local scriptTypes = {
+	Script = "lua",
+	LocalScript = "lua.local",
+	ModuleScript = "lua.module"
+}
+
+function Parser:parse (object)
+	local retValue = nil;
+	pcall (function ()
+		local objectType = self:_scriptType (object);
+		if (objectType) then
+			retValue = self:_scriptToString (object, objectType);
+		end
+	end)
+	
+	return retValue;
+end
+
+function Parser:_scriptType (object)
+	for typ,value in pairs (scriptTypes) do
+		if (object:IsA(typ)) then
+			return value;
+		end
+	end
+	return nil;
+end
+
+function Parser:_scriptToString (object, objectType)
+	local fullName = object:GetFullName ();
+	local contents = object.Source;
+	
+	return fullName .. "\n" .. objectType .. "\n" .. contents;
+end
+
+return Parser;

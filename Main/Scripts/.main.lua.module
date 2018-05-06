@@ -1,0 +1,40 @@
+local Scripts = { };
+local S       = { };
+
+function S.new ()
+	return setmetatable ({
+		_buffer = { }
+	}, Scripts);
+end
+
+function Scripts:addScript (name, contents)
+	table.insert (self._buffer, {
+		name = name,
+		contents = contents
+	});
+end
+
+function Scripts:sort ()
+	table.sort (self._buffer, function (a, b)
+		return a.name < b.name;
+	end);
+end
+
+function Scripts:unique ()
+	local dict = { };
+	for _,obj in pairs (self._buffer) do
+		dict [obj.name] = obj.contents;
+	end
+	
+	self._buffer = { };
+	for name,contents in pairs (dict) do
+		table.insert (self._buffer, {name = name, contents = contents});
+	end
+end
+
+function Scripts:toArray ()
+	return self._buffer;
+end
+
+Scripts.__index = Scripts;
+return S;
